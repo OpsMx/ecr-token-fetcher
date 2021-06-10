@@ -31,6 +31,7 @@ it is preferred to use that to gain initial permissions.
     kubectl create secret generic aws-credentials \
     --from-file /home/$USER/.aws/config --from-file /home/$USER/.aws/credentials
     ```
+### Configure environment
 1. Edit `ecr-configmap.yaml` as appropriate for your environment with account number and default region.
     ```yaml
     apiVersion: v1
@@ -41,6 +42,7 @@ it is preferred to use that to gain initial permissions.
         account: <account-number>
         region: <region-name>
     ```
+### Launch CronJob
 1. Send the completed configmap and cronjob documents to the API server.
     ```bash
     kubectl apply -f ecr-configmap.yaml -f ecr-updater.yaml

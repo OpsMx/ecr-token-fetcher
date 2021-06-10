@@ -32,4 +32,3 @@ spec:
           - name: aws-credentials
             secret:
               secretName: aws-credentials
-
