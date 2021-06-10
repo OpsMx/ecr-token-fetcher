@@ -1,10 +1,4 @@
-# ACCOUNT=
-# REGION=
 SECRET_NAME=${REGION}-ecr-registry
-# EMAIL=
-#
-# Fetch token (which will expire in 12 hours)
-#
 
 TOKEN=`aws ecr --region=$REGION get-authorization-token --output text --query authorizationData[].authorizationToken | base64 -d | cut -d: -f2`
 

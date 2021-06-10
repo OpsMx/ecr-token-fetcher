@@ -2,9 +2,8 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: ecr-updater
-  namespace: oes
 spec:
-  schedule: "* * * * *"
+  schedule: "0 */3 * * *"
   jobTemplate:
     spec:
       template:
@@ -12,10 +11,6 @@ spec:
           containers:
           - name: ecr-token-updater
             env:
-            - name: AWS_SHARED_CREDENTIALS_FILE
-              value: /root/.aws/credentials/credentials
-            - name: AWS_CONFIG_FILE
-              value: /root/.aws/config/config
             - name: REGION
               valueFrom:
                 configMapKeyRef:
@@ -29,32 +24,12 @@ spec:
             image: quay.io/opsmxpublic/ecr-token-updater:latest
             imagePullPolicy: IfNotPresent
             volumeMounts:
-            - name: aws-config
-              mountPath: /root/.aws/config
-              readOnly: true
             - name: aws-credentials
-              mountPath: /root/.aws/credentials
+              mountPath: /root/.aws
               readOnly: true
-#            command: ["cat"]
-#            args: ["/root/.aws/config/config"]
-#            env:
           restartPolicy: OnFailure
           volumes:
-          - name: aws-config
-            secret:
-              secretName: aws-config
           - name: aws-credentials
             secret:
               secretName: aws-credentials
-
----
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ecr-config
-  namespace: oes
-data:
-  account: "732813442182"
-  region: us-east-1
 
